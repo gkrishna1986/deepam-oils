@@ -18,7 +18,7 @@ const CONFIG = {
   heroVideo: {
     playIntro: false,                      // false = open straight on the lit diya (flame loop), no pouring intro
     desktop: "assets/hero-desktop.mp4",   // 16:9 intro clip (only used when playIntro is true; kept in _source/)
-    desktopLoop: "assets/hero-desktop-loop.mp4", // "living flame" loop — the homepage video
+    desktopLoop: "assets/hero-desktop-loop.mp4?v=2", // "living flame" loop — the homepage video
     loopStartAt: 1.5,                      // where in the loop the clip's last frame matches (seamless hand-off)
     mobile: null,                          // 9:16 portrait clip — later. Until then phones show the desktop clip as a top band
     flameAt: 4.6,                          // second in the clip when the flame ignites
