@@ -5,8 +5,8 @@
    ========================================================= */
 const CONFIG = {
   // WhatsApp number in international format, digits only (91 = India). <-- REPLACE
-  whatsapp: "919999999999",
-  phoneDisplay: "+91 99999 99999",
+  whatsapp: "919740715686",
+  phoneDisplay: "+91 97407 15686",
   proprietor: "Kiran Kumar P N",
   place: "Bagepalli",
   address: "Bagepalli, Chikkaballapur District, Karnataka",
