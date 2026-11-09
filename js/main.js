@@ -574,6 +574,27 @@ function heroIntro() {
 }
 
 /* ---------------------------------------------------------
+   SPLASH SCREEN — business & proprietor name, once per visit
+   --------------------------------------------------------- */
+let splashDone = Promise.resolve();
+function runSplash() {
+  const el = $("#splash");
+  if (!el) return Promise.resolve();
+  if (document.documentElement.classList.contains("no-splash")) { el.remove(); return Promise.resolve(); }
+  document.body.classList.add("splashing");
+  sessionFlag("deepam_splash_seen", true);
+  const hold = reduceMotion ? 1200 : 2700;
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      el.classList.add("splash-out");
+      document.body.classList.remove("splashing");
+      resolve(); // homepage starts revealing while the splash fades away
+      setTimeout(() => el.remove(), 1100);
+    }, hold);
+  });
+}
+
+/* ---------------------------------------------------------
    REALISTIC VIDEO HERO — used when the clip exists
    --------------------------------------------------------- */
 async function fileExists(url) {
@@ -631,11 +652,10 @@ function videoHome(src, mobile) {
     .to("[data-hero]", { opacity: 1, y: 0, duration: 1.0, stagger: 0.12, ease: "power3.out" }, 0.5)
     .to("#scrollCue", { opacity: 1, duration: 0.8 }, 1.3);
 
-  let started = false;
-  const start = () => { if (started) return; started = true; reveal.play(); };
-  vid.addEventListener("loadeddata", start, { once: true });
+  // reveal once the splash is leaving AND the video has a frame (or 1.5s passed)
+  const videoReady = new Promise((res) => { vid.addEventListener("loadeddata", res, { once: true }); setTimeout(res, 1500); });
   vid.addEventListener("loadedmetadata", updateLightPos);
-  setTimeout(start, 1500); // never leave the page dark if the video is slow
+  Promise.all([splashDone, videoReady]).then(() => reveal.play());
   vid.play().catch(() => {}); // autoplay blocked: first frame still shows
 
   window.addEventListener("resize", updateLightPos);
@@ -784,5 +804,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initLinks();
   initEmbers();
   initCursorLight();
+  splashDone = runSplash();
   startHero();
 });
